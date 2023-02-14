@@ -2,59 +2,58 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    username: {
-      type: String,
-      require: true,
-      min: 3,
-      max: 20,
-      unique: true,
-    },
     email: {
       type: String,
       required: true,
-      max: 50,
       unique: true,
+    },
+    username: {
+      type: String,
+      require: true,
     },
     password: {
       type: String,
       required: true,
-      min: 6,
     },
-    profilePicture: {
+    fullname: {
       type: String,
-      default: "",
+      default: ""
     },
-    coverPicture: {
+    gender: {
       type: String,
-      default: "",
+      default: ""
     },
-    followers: {
-      type: Array,
-      default: [],
-    },
-    followings: {
-      type: Array,
-      default: [],
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    desc: {
+    description: {
       type: String,
-      max: 50,
+      default: ""
     },
-    city: {
-      type: String,
-      max: 50,
-    },
-    from: {
-      type: String,
-      max: 50,
-    },
-    relationship: {
+    yourviewed: {
       type: Number,
-      enum: [1, 2, 3],
+      default: 0,
+    },
+    profileviewed: {
+      type: Number,
+      default: 0,
+    },
+    youviewed: {
+      type: Number,
+      default: 0,
+    },
+    lastlogin: {
+      type: String,
+      default: "",
+    },
+    status: {
+      type: Number,
+      default: 0,
+    },
+    profilepicture: {
+      type: String,
+      default: "",
+    },
+    permission: {
+      type: String,
+      default: "user",
     },
   },
   { timestamps: true }

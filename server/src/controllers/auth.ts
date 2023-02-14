@@ -6,17 +6,23 @@ import { RequestExtended, ResponseExtended } from "../types";
 /* REGISTER USER */
 export const register = async (req: RequestExtended, res: ResponseExtended) => {
   try {
-    // const { email } = req.body;
+    const { email } = req.body;
 
-    // const user = await User.findOne({ email: email as string });
-    // if (user) {
-    //   return res.status(400).json({ msg: "User already exist" });
-    // }
-    // const newUser = new User(req.body);
-    // const savedUser = await newUser.save();
-    // return res.status(201).json(savedUser);
-    console.log(req.body);
-    return res.json({ success: true });
+    const user = await User.findOne({ email: email as string });
+    if (user) {
+      return res.status(400).json({ msg: "User already exist" });
+    }
+    const newUser = new User(req.body);
+    let savedUser = await newUser.save() as any;
+    savedUser = savedUser._doc;
+    const { username, permission } = savedUser ;
+    let { password, _id, ...userData } = savedUser;
+    userData = { ...userData, USERID: _id };
+    const token = { USERID: _id, email, username, permission };
+    const accessToken = jwt.sign(token, process.env.JWT as string);
+    return res
+      .status(201)
+      .json({ user: userData, status: 200, message: "success", accessToken });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -34,11 +40,17 @@ export const login = async (req: RequestExtended, res: ResponseExtended) => {
     } else {
       if (password === user.password) {
         user = (user as any)._doc;
-        const { password, ...userData } = user as any;
-        const { _id, email, username, isAdmin } = user as any;
-        const token = { _id, email, username, isAdmin };
+        const { email, username, permission } = user as any;
+        let { password, _id, ...userData } = user as any;
+        userData = { ...userData, USERID: _id };
+        const token = { USERID: _id, email, username, permission };
         const accessToken = jwt.sign(token, process.env.JWT as string);
-        return res.status(200).json({ accessToken, user: userData });
+        return res.status(200).json({
+          accessToken,
+          status: 200,
+          user: userData,
+          message: "success",
+        });
       } else {
         return res
           .status(400)

@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth";
+import categoryRoutes from "./routes/category";
 
 var bodyParser = require("body-parser");
 
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/categories", categoryRoutes);
 
 mongoose
   .connect(URI, {

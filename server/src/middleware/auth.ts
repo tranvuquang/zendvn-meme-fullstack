@@ -16,9 +16,9 @@ export const verifyToken = async (
     if (!token) {
       return res.status(403).send("Access Denied");
     }
-
+    
     const decoded = jwt.verify(token, process.env.JWT as string) as any;
-
+    req.headers.user = decoded;
     if (!decoded) {
       return res.status(403).send("Token is not valid!");
     }

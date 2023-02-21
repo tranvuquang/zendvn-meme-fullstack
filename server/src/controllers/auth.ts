@@ -41,13 +41,13 @@ export const login = async (req: RequestExtended, res: ResponseExtended) => {
       if (password === user.password) {
         user = (user as any)._doc;
         const { email, username, permission, _id } = user as any;
-        const token = { USERID: _id, email, username, permission };
+        const token = { _id, email, username, permission };
         const accessToken = jwt.sign(token, process.env.JWT as string);
         return res.status(200).json({
           accessToken,
           status: 200,
           user: {
-            USERID: _id,
+            _id,
             email,
             username,
             permission,

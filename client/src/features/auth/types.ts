@@ -1,5 +1,5 @@
 export type IUser = {
-  USERID: string;
+  _id: string;
   email: string;
   username: string;
   password: string;
@@ -28,7 +28,7 @@ export type AuthState = {
 };
 
 export const userDefaultData = {
-  USERID: "",
+  _id: "",
   email: "",
   username: "",
   password: "",

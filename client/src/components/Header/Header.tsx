@@ -33,9 +33,9 @@ export default function Header() {
           <Link to="/posts/create" className="ass1-header__btn-upload ass1-btn">
             <i className="icon-Upvote" /> Upload
           </Link>
-          {user.USERID ? (
+          {user._id ? (
             <div className="wrapper-user">
-              <Link to={`/users/${user.USERID}`} className="user-header">
+              <Link to={`/users/${user._id}`} className="user-header">
                 <span className="avatar">
                   <img src={user.profilepicture || avatar} alt="avatar" />
                 </span>

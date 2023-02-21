@@ -191,7 +191,7 @@ export default function Header() {
             <div className="wrapper-user">
               <Link to={`/users/${user.USERID}`} className="user-header">
                 <span className="avatar">
-                  <img src={avatar} alt="avatar" />
+                  <img src={user.profilepicture||avatar} alt="avatar" />
                 </span>
                 <span className="email">{user.email}</span>
               </Link>

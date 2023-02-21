@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth";
 import categoryRoutes from "./routes/category";
+import postRoutes from "./routes/post";
 
 var bodyParser = require("body-parser");
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/posts", postRoutes);
 
 mongoose
   .connect(URI, {

@@ -8,10 +8,10 @@ const accessToken = localStorage.getItem("accessToken") || "";
 const getUser = () => {
   let user: IUser = userDefaultData;
   if (accessToken) {
-    const { USERID, email, username, permission } = jwt_decode(
+    const { _id, email, username, permission } = jwt_decode(
       accessToken
     ) as IUser;
-    user = { ...user, USERID, email, username, permission };
+    user = { ...user, _id, email, username, permission };
   }
   return user;
 };
@@ -45,8 +45,12 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setUserRedux, setAccessTokenRedux, setLoadingRedux,setCategoriesRedux } =
-  authSlice.actions;
+export const {
+  setUserRedux,
+  setAccessTokenRedux,
+  setLoadingRedux,
+  setCategoriesRedux,
+} = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 

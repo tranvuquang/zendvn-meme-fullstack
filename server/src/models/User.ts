@@ -7,25 +7,26 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    username: {
-      type: String,
-      require: true,
-    },
     password: {
       type: String,
       required: true,
     },
+    username: {
+      type: String,
+      require: true,
+      default: "",
+    },
     fullname: {
       type: String,
-      default: ""
+      default: "",
     },
     gender: {
       type: String,
-      default: ""
+      default: "",
     },
     description: {
       type: String,
-      default: ""
+      default: "",
     },
     yourviewed: {
       type: Number,

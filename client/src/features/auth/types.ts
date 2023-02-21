@@ -15,10 +15,16 @@ export type IUser = {
   permission: string;
 };
 
+export type ICategory = {
+  _id: string;
+  text: string;
+};
+
 export type AuthState = {
   user: IUser;
   accessToken: string;
   loading: boolean;
+  categories: ICategory[];
 };
 
 export const userDefaultData = {

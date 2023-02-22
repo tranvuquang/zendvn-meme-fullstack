@@ -7,13 +7,13 @@ export const createPost = async (
   res: ResponseExtended
 ) => {
   try {
-    const { USERID } = req.headers.user as any;
-    let user = (await User.findById({ _id: USERID })) as any;
+    const { _id } = req.headers.user as any;
+    let user = (await User.findById({ _id })) as any;
     user = user?._doc;
     const { email, profilepicture } = user as any;
     const { post_content, url_image, category } = req.body;
     const post = {
-      USERID,
+      USERID:_id,
       email,
       profilepicture,
       url_image,
@@ -39,7 +39,7 @@ export const getPosts = async (
 ) => {
   try {
     const posts = await Post.find();
-    
+
     return res.status(200).json({
       status: 200,
       posts,

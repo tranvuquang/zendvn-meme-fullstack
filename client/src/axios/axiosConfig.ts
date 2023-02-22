@@ -62,7 +62,7 @@ export const getAxiosData = async (
         Authorization: `Bearer ${accessToken}`,
       },
     })) as AxiosResponse<any, any>;
-    return  resData ;
+    return { resData };
   } catch (error: any) {
     console.log(error.message);
     return;
@@ -120,7 +120,7 @@ export const postAxiosData = async (
     })) as AxiosResponse<any, any>;
 
     if (resData && reFetchUrl) {
-      let { reFetchData } = (await getAxiosData(
+      let reFetchData = (await getAxiosData(
         reFetchUrl,
         accessToken,
         dispatch
@@ -192,4 +192,3 @@ export const logout = async (dispatch: Dispatch<AnyAction>) => {
   dispatch(setAccessTokenRedux(""));
   return { success: true };
 };
-

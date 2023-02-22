@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { postAxiosData } from "../../axios/axiosConfig";
+import { getAxiosData, postAxiosData } from "../../axios/axiosConfig";
 import { useParams } from "react-router-dom";
 import { PostDetailForm } from "../../components/PostDetailForm";
 import { PostDetailSidebar } from "../../components/PostDetailSidebar";
@@ -22,8 +22,23 @@ const PostId = (props: Props) => {
   const dispatch = useAppDispatch();
   const [postData, setPostData] = useState(postDataValue);
 
+  useEffect(() => {
+    const asyncThunk = async () => {
+      if (id) {
+        const { resData } = (await getAxiosData(
+          `/api/posts/${id}`,
+          accessToken,
+          dispatch
+        )) as any;
+        if (resData) {
+          setPostData(resData.data.post);
+        }
+      }
+    };
+    asyncThunk();
+  }, [accessToken, dispatch, id]);
+
   const onChangeDetailForm = (key: string, value: any) => {
-    // console.log(key, value);
     setPostData({
       ...postData,
       [key]: value,
@@ -42,8 +57,17 @@ const PostId = (props: Props) => {
       if (resData) {
         navigate("/home");
       }
-    }else{
-      
+    } else {
+      const { resData } = (await postAxiosData(
+        `/api/posts/${id}`,
+        accessToken,
+        postData,
+        dispatch,
+        "/api/posts"
+      )) as any;
+      if (resData) {
+        navigate("/home");
+      }
     }
   };
   return (

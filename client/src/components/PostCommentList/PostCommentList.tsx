@@ -1,18 +1,32 @@
-// import Link from "next/link";
-// import dayjs from "dayjs";
-// import viLocal from "dayjs/locale/vi";
-// import relativeTime from "dayjs/plugin/relativeTime";
-// import { TypeComment } from "../../pages/posts/[postId]";
-
+import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
-
-// dayjs.extend(relativeTime);
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { deleteAxiosData } from "../../axios/axiosConfig";
+import { selectAuth } from "../../features/auth/authSlice";
+import { setCommentsRedux } from "../../features/comment/commentSlice";
 
 type PropsType = {
   listComments: any[];
+  PID?: string;
 };
 
-const PostCommentList: React.FC<PropsType> = ({ listComments }) => {
+const PostCommentList: React.FC<PropsType> = ({ listComments, PID = "" }) => {
+  const { accessToken } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
+  const onDeleteComment = async (id: string) => {
+    const { resData, reFetchData } = (await deleteAxiosData(
+      `/api/comments/delete`,
+      accessToken,
+      {
+        id,
+      },
+      dispatch,
+      `/api/comments/${PID}`
+    )) as any;
+    if (resData && reFetchData) {
+      dispatch(setCommentsRedux(reFetchData.data.comments))
+    }
+  };
   return (
     <div className="ass1-comments">
       <div className="ass1-comments__head">
@@ -64,6 +78,13 @@ const PostCommentList: React.FC<PropsType> = ({ listComments }) => {
                 </a>
               </div>
             </div>
+            <Button
+              variant="danger"
+              style={{ color: "unset" }}
+              onClick={() => onDeleteComment(_id)}
+            >
+              Delete
+            </Button>
           </div>
         );
       })}

@@ -47,3 +47,20 @@ export const getCommentsByPID = async (
     return res.status(500).json({ error: err.message });
   }
 };
+
+export const deleteComment = async (
+  req: RequestExtended,
+  res: ResponseExtended
+) => {
+  try {
+    const { id } = req.body;
+    const comment = await Comment.deleteOne({ _id: id });
+    return res.status(200).json({
+      status: 200,
+      comment,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};

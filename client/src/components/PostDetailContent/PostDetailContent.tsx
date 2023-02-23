@@ -141,7 +141,7 @@ const PostDetailContent: React.FC<PropsType> = ({
 
              */}
       <PostCommentForm />
-      <PostCommentList listComments={comments} />
+      <PostCommentList listComments={comments} PID={id} />
     </div>
   );
 };

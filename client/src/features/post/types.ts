@@ -13,6 +13,7 @@ export type IPost = {
 
 export type PostState = {
   posts: IPost[];
+  currentPost: IPost;
 };
 
 export const postDefaultData = {

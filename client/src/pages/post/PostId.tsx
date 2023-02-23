@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getAxiosData, postAxiosData } from "../../axios/axiosConfig";
+import { postAxiosData, useFetch } from "../../axios/axiosConfig";
 import { useParams } from "react-router-dom";
 import { PostDetailForm } from "../../components/PostDetailForm";
 import { PostDetailSidebar } from "../../components/PostDetailSidebar";
 import { selectAuth } from "../../features/auth/authSlice";
+import { setPostsRedux } from "../../features/post/postSlice";
 
 type Props = {};
 
@@ -22,21 +23,13 @@ const PostId = (props: Props) => {
   const dispatch = useAppDispatch();
   const [postData, setPostData] = useState(postDataValue);
 
+  const { data } = useFetch(`/api/posts/${id}`, accessToken, dispatch);
+
   useEffect(() => {
-    const asyncThunk = async () => {
-      if (id) {
-        const { resData } = (await getAxiosData(
-          `/api/posts/${id}`,
-          accessToken,
-          dispatch
-        )) as any;
-        if (resData) {
-          setPostData(resData.data.post);
-        }
-      }
-    };
-    asyncThunk();
-  }, [accessToken, dispatch, id]);
+    if (data) {
+      setPostData(data.post);
+    }
+  }, [data]);
 
   const onChangeDetailForm = (key: string, value: any) => {
     setPostData({
@@ -47,39 +40,35 @@ const PostId = (props: Props) => {
 
   const handleSubmitPost = async () => {
     if (!id) {
-      const { resData } = (await postAxiosData(
+      const { resData, reFetchData } = (await postAxiosData(
         "/api/posts/create",
         accessToken,
         postData,
         dispatch,
         "/api/posts"
       )) as any;
-      if (resData) {
-        navigate("/home");
+      if (resData && reFetchData) {
       }
+      dispatch(setPostsRedux(reFetchData.data.posts));
     } else {
-      const { resData } = (await postAxiosData(
+      const { resData, reFetchData } = (await postAxiosData(
         `/api/posts/${id}`,
         accessToken,
         postData,
         dispatch,
         "/api/posts"
       )) as any;
-      if (resData) {
-        navigate("/home");
+      if (resData && reFetchData) {
+        dispatch(setPostsRedux(reFetchData.data.posts));
       }
     }
+    navigate("/home");
+    setPostData(postDataValue);
   };
   return (
     <div className="container">
       <div className="row">
         <div className="col-lg-8">
-          {/* <PostDetailForm
-            url_image={postData.url_image}
-            post_content={postData.post_content}
-            obj_image={postData.obj_image}
-            onChangeDetailForm={onChangeDetailForm}
-          /> */}
           <PostDetailForm
             url_image={postData.url_image}
             post_content={postData.post_content}
@@ -87,12 +76,6 @@ const PostId = (props: Props) => {
           />
         </div>
         <div className="col-lg-4">
-          {/* <PostDetailSidebar
-            loading={loading}
-            category={postData.category}
-            handleSubmitPost={handleSubmitPost}
-            onChangeDetailForm={onChangeDetailForm}
-          /> */}
           <PostDetailSidebar
             category={postData.category}
             onChangeDetailForm={onChangeDetailForm}

@@ -1,5 +1,6 @@
 import Post from "../models/Post";
 import User from "../models/User";
+import Comment from "../models/Comment";
 import { RequestExtended, ResponseExtended } from "../types";
 
 export const createPost = async (
@@ -86,13 +87,32 @@ export const updatePost = async (
       post_content,
       category,
     };
-    // console.log(updatePost)
-    const post = await Post.findOneAndUpdate(
-      { _id: id },
-      updatePost,
-      { new: true }
-    );
-    
+    const post = await Post.findOneAndUpdate({ _id: id }, updatePost, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      status: 200,
+      post,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+export const deletePost = async (
+  req: RequestExtended,
+  res: ResponseExtended
+) => {
+  try {
+    const { id } = req.body;
+    const data = (await Comment.find({ PID: id })) as any;
+    const comments = [...data];
+    if (comments.length > 0) {
+      await Comment.deleteMany({ PID: id });
+    }
+    const post = await Post.deleteOne({ _id: id });
     return res.status(200).json({
       status: 200,
       post,

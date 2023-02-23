@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getAxiosData } from "../../axios/axiosConfig";
+import {  useFetch } from "../../axios/axiosConfig";
 import { PostDetailContent } from "../../components/PostDetailContent";
 import { selectAuth } from "../../features/auth/authSlice";
 
@@ -18,32 +18,18 @@ const PostPage = (props: Props) => {
   const { accessToken } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const [postData, setPostData] = useState(postDataValue);
+
+  const { data } = useFetch(`/api/posts/${id}`, accessToken, dispatch);
   useEffect(() => {
-    const asyncThunk = async () => {
-      if (id) {
-        const  resData  = (await getAxiosData(
-          `/api/posts/${id}`,
-          accessToken,
-          dispatch
-        )) as any;
-        if (resData) {
-          setPostData(resData.data.post);
-        }
-      }
-    };
-    asyncThunk();
-  }, [accessToken, dispatch, id]);
+    if (data) {
+      setPostData(data.post);
+    }
+  }, [data]);
   return (
     <div className="container">
       <div className="row">
         <div className="col-lg-8">
-          {postData && (
-            <PostDetailContent
-              // listComments={comments}
-              postDetailData={postData}
-              // postCategories={postCategories}
-            />
-          )}
+          {postData && <PostDetailContent postDetailData={postData} />}
         </div>
         <div className="col-lg-4">
           {/* <HomeSidebar userPosts={userPosts} /> */}

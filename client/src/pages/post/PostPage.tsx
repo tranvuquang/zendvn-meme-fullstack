@@ -21,7 +21,7 @@ const PostPage = (props: Props) => {
   useEffect(() => {
     const asyncThunk = async () => {
       if (id) {
-        const { resData } = (await getAxiosData(
+        const  resData  = (await getAxiosData(
           `/api/posts/${id}`,
           accessToken,
           dispatch

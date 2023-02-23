@@ -1,4 +1,14 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useFetch } from "../../axios/axiosConfig";
+import { selectAuth } from "../../features/auth/authSlice";
+import {
+  selectComment,
+  setCommentsRedux,
+} from "../../features/comment/commentSlice";
+import { PostCommentForm } from "../PostCommentForm";
+import { PostCommentList } from "../PostCommentList";
 import { PostItem } from "../PostItem";
 import "./PostDetailContent.css";
 // import Link from "next/link";
@@ -23,6 +33,18 @@ const PostDetailContent: React.FC<PropsType> = ({
   // postCategories,
   // listComments: initListComments
 }) => {
+  const { id } = useParams();
+  const { accessToken } = useAppSelector(selectAuth);
+  const { comments } = useAppSelector(selectComment);
+  const dispath = useAppDispatch();
+  const { data } = useFetch(`/api/comments/${id}`, accessToken, dispath);
+
+  useEffect(() => {
+    if (data) {
+      dispath(setCommentsRedux(data.comments));
+    }
+  }, [data, dispath]);
+
   // const router = useRouter();
   // const postId = router.query.postId as string;
   // const [token] = useGlobalState("token");
@@ -68,11 +90,7 @@ const PostDetailContent: React.FC<PropsType> = ({
           {postDetailData.category.map((cate: any, index: number) => {
             return (
               <li key={index}>
-                <Link
-                  to="/categories/[cateId]"
-                >
-                  {cate}
-                </Link>
+                <Link to="/categories/[cateId]">{cate}</Link>
               </li>
             );
           })}
@@ -81,7 +99,9 @@ const PostDetailContent: React.FC<PropsType> = ({
 
       {/* <PostCommentForm handleSubmitForm={handleSubmitForm} />
 
-            <PostCommentList listComments={listComments} /> */}
+             */}
+      <PostCommentForm />
+      <PostCommentList listComments={comments} />
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { PostState } from "./types";
+import { postDefaultData, PostState } from "./types";
 
 const initialState: PostState = {
   posts: [],
+  currentPost: postDefaultData,
 };
 
 export const postSlice = createSlice({
@@ -13,10 +14,13 @@ export const postSlice = createSlice({
     setPostsRedux: (state, action) => {
       state.posts = action.payload;
     },
+    setCurrentPostRedux: (state, action) => {
+      state.posts = action.payload;
+    },
   },
 });
 
-export const { setPostsRedux } = postSlice.actions;
+export const { setPostsRedux, setCurrentPostRedux } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.post;
 

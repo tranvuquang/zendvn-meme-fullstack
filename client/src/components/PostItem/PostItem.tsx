@@ -1,5 +1,4 @@
-import Button from "react-bootstrap/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IPost, postDefaultData } from "../../features/post/types";
 
 type PropsType = {
@@ -7,7 +6,6 @@ type PropsType = {
 };
 
 const PostItem: React.FC<PropsType> = ({ post = postDefaultData }) => {
-  let navigate = useNavigate();
   if (!post) return null;
   return (
     <div className="ass1-section__item">
@@ -33,26 +31,14 @@ const PostItem: React.FC<PropsType> = ({ post = postDefaultData }) => {
               <img src={post.url_image} alt="" />
             </Link>
           </div>
-        </div>
-        <div
-          className="ass1-section__footer"
-          style={{ display: "flex", justifyContent: "flex-end" }}
-        >
-          {/* <button className="ass1-section__btn-comment ass1-btn-icon">
-            <i className="icon-Comment_Full" />
-            <span>{post.count} 12</span>
-          </button> */}
-          <Button
-            variant="warning"
-            onClick={() => {
-              navigate(`/posts/${post._id}/update`);
-            }}
-          >
-            Update
-          </Button>
-          <Button variant="danger" style={{ color: "unset" }}>
-            Delete
-          </Button>
+          <div className="ass1-section__footer">
+            <Link to={`/posts/${post._id}`}>
+              <p className="ass1-section__btn-comment ass1-btn-icon">
+                <i className="icon-Comment_Full" />
+                <span>{post.count || 0}</span>
+              </p>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

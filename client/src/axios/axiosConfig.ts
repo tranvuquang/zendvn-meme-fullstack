@@ -62,7 +62,7 @@ export const getAxiosData = async (
         Authorization: `Bearer ${accessToken}`,
       },
     })) as AxiosResponse<any, any>;
-    return  resData ;
+    return resData;
   } catch (error: any) {
     console.log(error.message);
     return;
@@ -87,7 +87,7 @@ export const putAxiosData = async (
       },
     })) as AxiosResponse<any, any>;
     if (resData && reFetchUrl) {
-      let { reFetchData } = (await getAxiosData(
+      let reFetchData = (await getAxiosData(
         reFetchUrl,
         accessToken,
         dispatch
@@ -139,6 +139,7 @@ export const postAxiosData = async (
 export const deleteAxiosData = async (
   url: string = "",
   accessToken: string | null = "",
+  payload: any = {},
   dispatch: Dispatch<AnyAction>,
   reFetchUrl: string = ""
 ) => {
@@ -149,9 +150,10 @@ export const deleteAxiosData = async (
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
+      data: payload,
     })) as AxiosResponse<any, any>;
     if (resData) {
-      let { reFetchData } = (await getAxiosData(
+      let reFetchData = (await getAxiosData(
         reFetchUrl,
         accessToken,
         dispatch

@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useFetch } from "../../axios/axiosConfig";
+import { deleteAxiosData, useFetch } from "../../axios/axiosConfig";
 import { selectAuth } from "../../features/auth/authSlice";
 import {
   selectComment,
   setCommentsRedux,
 } from "../../features/comment/commentSlice";
+import { setPostsRedux } from "../../features/post/postSlice";
 import { PostCommentForm } from "../PostCommentForm";
 import { PostCommentList } from "../PostCommentList";
 import { PostItem } from "../PostItem";
@@ -33,17 +35,18 @@ const PostDetailContent: React.FC<PropsType> = ({
   // postCategories,
   // listComments: initListComments
 }) => {
+  let navigate = useNavigate();
   const { id } = useParams();
   const { accessToken } = useAppSelector(selectAuth);
   const { comments } = useAppSelector(selectComment);
-  const dispath = useAppDispatch();
-  const { data } = useFetch(`/api/comments/${id}`, accessToken, dispath);
+  const dispatch = useAppDispatch();
+  const { data } = useFetch(`/api/comments/${id}`, accessToken, dispatch);
 
   useEffect(() => {
     if (data) {
-      dispath(setCommentsRedux(data.comments));
+      dispatch(setCommentsRedux(data.comments));
     }
-  }, [data, dispath]);
+  }, [data, dispatch]);
 
   // const router = useRouter();
   // const postId = router.query.postId as string;
@@ -78,9 +81,46 @@ const PostDetailContent: React.FC<PropsType> = ({
   //     })
   // }
 
+  const onDeletePost = async () => {
+    const { resData, reFetchData } = (await deleteAxiosData(
+      `/api/posts/delete`,
+      accessToken,
+      {
+        id,
+      },
+      dispatch,
+      `/api/posts`
+    )) as any;
+    if (resData && reFetchData) {
+      dispatch(setPostsRedux(reFetchData.data.posts));
+      navigate("/home");
+    }
+  };
+
   return (
     <div className="ass1-section__list">
       <PostItem post={postDetailData} />
+
+      <div
+        className="ass1-section__footer"
+        style={{ display: "flex", justifyContent: "flex-end" }}
+      >
+        <Button
+          variant="warning"
+          onClick={() => {
+            navigate(`/posts/${id}/update`);
+          }}
+        >
+          Update
+        </Button>
+        <Button
+          variant="danger"
+          style={{ color: "unset" }}
+          onClick={onDeletePost}
+        >
+          Delete
+        </Button>
+      </div>
 
       <div className="list-categories">
         <h5>

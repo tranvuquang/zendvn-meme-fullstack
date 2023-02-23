@@ -26,7 +26,7 @@ const Layout = (props: Props) => {
   useEffect(() => {
     const asyncFunction = async () => {
       if (user && accessToken && user._id) {
-        const { resData } = (await getAxiosData(
+        const resData = (await getAxiosData(
           `/api/auth/${user._id}`,
           accessToken,
           dispatch

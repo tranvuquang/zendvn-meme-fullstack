@@ -74,15 +74,8 @@ export const updatePost = async (
 ) => {
   try {
     const { id } = req.params;
-    const { _id } = req.headers.user as any;
-    let user = (await User.findById({ _id })) as any;
-    user = user?._doc;
-    const { email, profilepicture } = user as any;
     const { post_content, url_image, category } = req.body;
     const updatePost = {
-      USERID: _id,
-      email,
-      profilepicture,
       url_image,
       post_content,
       category,

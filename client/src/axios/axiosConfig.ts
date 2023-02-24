@@ -189,6 +189,26 @@ export const login = async (
   }
 };
 
+export const register = async (
+  data: { email: string; password: string },
+  dispatch: Dispatch<AnyAction>
+) => {
+  dispatch(setLoadingRedux(true));
+  try {
+    const res = await axios.post(`${baseURL}/api/auth/register`, data);
+    if (res) {
+      const { accessToken, user } = res.data;
+      dispatch(setUserRedux(user));
+      dispatch(setAccessTokenRedux(accessToken));
+      return { success: true };
+    }
+  } catch (error: any) {
+    console.log(error.message);
+  } finally {
+    dispatch(setLoadingRedux(false));
+  }
+};
+
 export const logout = async (dispatch: Dispatch<AnyAction>) => {
   dispatch(setUserRedux(userDefaultData));
   dispatch(setAccessTokenRedux(""));

@@ -5,6 +5,7 @@ import PrivatePages from "./pages/PrivatePages";
 
 const HomePage = React.lazy(() => import("./pages/HomePage"));
 const LoginPage = React.lazy(() => import("./pages/LoginPage"));
+const RegisterPage = React.lazy(() => import("./pages/RegisterPage"));
 const PrivateRoute = React.lazy(() => import("./routes/PrivateRoute"));
 // console.log(import.meta.env.VITE_BACKEND_URL);
 function App() {
@@ -27,6 +28,14 @@ function App() {
             element={
               <React.Suspense fallback={<h2>...Loading</h2>}>
                 <LoginPage />
+              </React.Suspense>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <React.Suspense fallback={<h2>...Loading</h2>}>
+                <RegisterPage />
               </React.Suspense>
             }
           />

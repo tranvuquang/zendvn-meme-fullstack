@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 const ChatRoute = React.lazy(() => import("../routes/ChatRoute"));
 const PostRoute = React.lazy(() => import("../routes/PostRoute"));
+const UserRoute = React.lazy(() => import("../routes/UserRoute"));
 const NotFoundPage = React.lazy(() => import("../pages/NotFoundPage"));
 
 type Props = {};
@@ -24,6 +25,14 @@ const PrivatePages = (props: Props) => {
           element={
             <React.Suspense fallback={<h2>...Loading</h2>}>
               <PostRoute />
+            </React.Suspense>
+          }
+        />
+        <Route
+          path="/users/*"
+          element={
+            <React.Suspense fallback={<h2>...Loading</h2>}>
+              <UserRoute />
             </React.Suspense>
           }
         />

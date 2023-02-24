@@ -5,7 +5,7 @@ export type IUser = {
   password: string;
   fullname: string;
   gender: string;
-  decription: string;
+  description: string;
   yourviewed: number;
   profileviewed: number;
   youviewed: number;

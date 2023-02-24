@@ -1,5 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
+import { logout } from "../../axios/axiosConfig";
 
 const navLinkStyle = ({ isActive }: { isActive: boolean }) => ({
   color: isActive ? "#0d6efd" : "inherit",
@@ -9,6 +11,7 @@ const navLinkStyle = ({ isActive }: { isActive: boolean }) => ({
 type Props = {};
 
 const Menu = (props: Props) => {
+  const dispatch = useAppDispatch();
   return (
     <div>
       <ul style={{ display: "flex" }}>
@@ -26,6 +29,9 @@ const Menu = (props: Props) => {
           <NavLink to="/chat" style={navLinkStyle}>
             Chat
           </NavLink>
+        </li>
+        <li style={{ listStyle: "none", margin: "0px 5px " }}>
+          <button onClick={() => logout(dispatch)}>logout</button>
         </li>
       </ul>
     </div>

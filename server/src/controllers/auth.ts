@@ -15,10 +15,10 @@ export const register = async (req: RequestExtended, res: ResponseExtended) => {
     const newUser = new User(req.body);
     let savedUser = (await newUser.save()) as any;
     savedUser = savedUser._doc;
-    const { username, permission } = savedUser;
-    let { password, _id, ...userData } = savedUser;
-    userData = { ...userData, USERID: _id };
-    const token = { USERID: _id, email, username, permission };
+    const { username, permission, _id } = savedUser;
+    let { password, ...userData } = savedUser;
+    userData = { ...userData };
+    const token = { _id, email, username, permission };
     const accessToken = jwt.sign(token, process.env.JWT as string);
     return res
       .status(201)
@@ -70,9 +70,7 @@ export const getUser = async (req: RequestExtended, res: ResponseExtended) => {
     const { USERID } = req.params;
     let user = (await User.findById(USERID)) as any;
     if (!user) {
-      return res
-        .status(400)
-        .json({ msg: "User does not exist" });
+      return res.status(400).json({ msg: "User does not exist" });
     }
     user = (user as any)._doc;
     const userData = { ...user, USERID: user._id, password: "" };
@@ -81,7 +79,6 @@ export const getUser = async (req: RequestExtended, res: ResponseExtended) => {
       user: userData,
       message: "success",
     });
-    
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

@@ -28,8 +28,6 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUserRedux: (state, action) => {
-      // const { _id, email, username, isAdmin } = action.payload;
-      // state.user = { ...state.user, _id, username, email, isAdmin };
       state.user = action.payload;
     },
     setAccessTokenRedux: (state, action) => {

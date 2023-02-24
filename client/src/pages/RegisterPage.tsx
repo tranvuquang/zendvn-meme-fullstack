@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-
 import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { login } from "../axios/axiosConfig";
+import { register } from "../axios/axiosConfig";
 import { selectAuth } from "../features/auth/authSlice";
 import { useAuthen } from "../helpers/useAuthen";
 
@@ -12,13 +11,13 @@ type FormData = {
   password: string;
 };
 const formDataDefault = {
-  email: "admin@gmail.com",
+  email: "user01@gmail.com",
   password: "123456",
 };
 
 type Props = {};
 
-const LoginPage = (props: Props) => {
+const RegisterPage = (props: Props) => {
   useAuthen();
   const [formData, setFormData] = useState<FormData>(formDataDefault);
   const { email, password } = formData;
@@ -30,21 +29,21 @@ const LoginPage = (props: Props) => {
 
   const handleClick = async (evt: React.SyntheticEvent) => {
     evt.preventDefault();
-    login(formData, dispatch);
+    register(formData, dispatch);
   };
   return (
     <div className="ass1-login">
       <div className="ass1-login__logo">
-        <a href="index.html" className="ass1-logo">
+        <Link to="/home" className="ass1-logo">
           ZendVn Meme
-        </a>
+        </Link>
       </div>
       <div className="ass1-login__content">
-        <p>Đăng nhập</p>
+        <p>Đăng ký một tài khoản</p>
         <div className="ass1-login__form">
-          <form onSubmit={handleClick}>
+          <form action="#" onSubmit={handleClick}>
             <input
-              type="text"
+              //   type="email"
               className="form-control"
               placeholder="Email"
               required
@@ -52,21 +51,20 @@ const LoginPage = (props: Props) => {
               value={email}
               onChange={handleChange}
             />
-            <div className="ass1-input-copy">
-              <input
-                // type="password"
-                className="form-control"
-                placeholder="Mật khẩu"
-                required
-                name="password"
-                value={password}
-                onChange={handleChange}
-              />
-            </div>
+            <input
+              //   type="password"
+              className="form-control"
+              placeholder="Mật khẩu"
+              required
+              name="password"
+              value={password}
+              onChange={handleChange}
+            />
+
             <div className="ass1-login__send">
-              <Link to="/register">Đăng ký một tài khoản</Link>
+              <Link to="/login">Đăng nhập</Link>
               <button type="submit" className="ass1-btn" disabled={loading}>
-                Đăng nhập{" "}
+                Đăng ký{" "}
                 {loading && (
                   <Spinner animation="border" size="sm" className="ms-2" />
                 )}
@@ -79,4 +77,4 @@ const LoginPage = (props: Props) => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

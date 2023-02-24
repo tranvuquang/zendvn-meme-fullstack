@@ -1,3 +1,4 @@
+import moment from "moment";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
@@ -64,7 +65,7 @@ const PostCommentList: React.FC<PropsType> = ({ listComments, PID = "" }) => {
               <Link to={`/users/${USERID}`}>
                 <p className="ass1-comments__name">{email}</p>
               </Link>
-              <span className="ass1-comments__passed">{createdAt}</span>
+              <span className="ass1-comments__passed">{moment(createdAt, "YYYYMMDD").fromNow()}</span>
               <p>{comment_content}</p>
 
               <div className="ass1-comments__info">

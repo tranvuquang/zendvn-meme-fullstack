@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { IPost, postDefaultData } from "../../features/post/types";
+import moment from "moment"
 
 type PropsType = {
   post?: IPost;
@@ -21,7 +22,7 @@ const PostItem: React.FC<PropsType> = ({ post = postDefaultData }) => {
             <Link to={`/users/${post.USERID}`} className="ass1-section__name">
               {post.email}
             </Link>
-            <span className="ass1-section__passed">{post.createdAt}</span>
+            <span className="ass1-section__passed">{moment(post.createdAt, "YYYYMMDD").fromNow()}</span>
           </div>
         </div>
         <div className="ass1-section__content">

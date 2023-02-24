@@ -67,8 +67,8 @@ export const login = async (req: RequestExtended, res: ResponseExtended) => {
 
 export const getUser = async (req: RequestExtended, res: ResponseExtended) => {
   try {
-    const { USERID } = req.params;
-    let user = (await User.findById(USERID)) as any;
+    const { id } = req.params;
+    let user = (await User.findById(id)) as any;
     if (!user) {
       return res.status(400).json({ msg: "User does not exist" });
     }
@@ -77,6 +77,32 @@ export const getUser = async (req: RequestExtended, res: ResponseExtended) => {
     return res.status(200).json({
       status: 200,
       user: userData,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateUser = async (
+  req: RequestExtended,
+  res: ResponseExtended
+) => {
+  try {
+    const { _id, ...data } = req.body;
+    const post = await User.findOneAndUpdate({ _id }, data, {
+      new: true,
+    });
+    // let user = (await User.findById(id)) as any;
+    // if (!user) {
+    //   return res.status(400).json({ msg: "User does not exist" });
+    // }
+    // user = (user as any)._doc;
+    // const userData = { ...user, USERID: user._id, password: "" };
+    return res.status(200).json({
+      status: 200,
+      // user: userData,
+      post,
       message: "success",
     });
   } catch (err) {

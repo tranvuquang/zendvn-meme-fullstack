@@ -93,16 +93,41 @@ export const updateUser = async (
     const post = await User.findOneAndUpdate({ _id }, data, {
       new: true,
     });
-    // let user = (await User.findById(id)) as any;
-    // if (!user) {
-    //   return res.status(400).json({ msg: "User does not exist" });
-    // }
-    // user = (user as any)._doc;
-    // const userData = { ...user, USERID: user._id, password: "" };
     return res.status(200).json({
       status: 200,
-      // user: userData,
       post,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+export const passwordUser = async (
+  req: RequestExtended,
+  res: ResponseExtended
+) => {
+  try {
+    const { oldPassword, password } = req.body;
+    const { _id } = req.headers.user as any;
+    let user = (await User.findById({ _id })) as any;
+    user = user?._doc;
+    if (oldPassword !== user.password) {
+      return res.status(400).json({
+        status: 400,
+        message: "unsuccess",
+      });
+    }
+    await User.findOneAndUpdate(
+      { _id },
+      { password },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json({
+      status: 200,
+      // post,
       message: "success",
     });
   } catch (err) {

@@ -1,0 +1,40 @@
+POST http://localhost:5001/api/posts/create
+Content-Type: application/json,*/*
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzliMTIyODYxZTFhYzdiYjQxYzlmNWYiLCJ1c2VybmFtZSI6InF1YW5nIiwiaWF0IjoxNjcxMTEyMjI3fQ.jZgxaBi4xV_Oa3MJ3lUwKvMZGfeKyambkRUIkK0m9LU
+
+{
+    "post_content": "post content",
+    "url_image": "123456",
+    "category": ["123456","789012"]
+}
+### create post
+
+POST http://localhost:5001/api/posts/63eba0f433594349e95f1b49
+Content-Type: application/json,*/*
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzliMTIyODYxZTFhYzdiYjQxYzlmNWYiLCJ1c2VybmFtZSI6InF1YW5nIiwiaWF0IjoxNjcxMTEyMjI3fQ.jZgxaBi4xV_Oa3MJ3lUwKvMZGfeKyambkRUIkK0m9LU
+
+{
+    "post_content": "post content",
+    "url_image": "123456",
+    "category": ["123456","789012"]
+}
+### update post id:string params
+
+GET http://localhost:5001/api/posts/getPostListPagination?pageSize=3&currentPage=1
+Content-Type: application/json,*/*
+### get all posts or get posts pagination
+
+GET http://localhost:5001/api/posts/63eba0f433594349e95f1b49
+Content-Type: application/json,*/*
+### get post
+
+DELETE http://localhost:5001/api/posts/delete
+Content-Type: application/json,*/*
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzliMTIyODYxZTFhYzdiYjQxYzlmNWYiLCJ1c2VybmFtZSI6InF1YW5nIiwiaWF0IjoxNjcxMTEyMjI3fQ.jZgxaBi4xV_Oa3MJ3lUwKvMZGfeKyambkRUIkK0m9LU
+
+{
+    "id": "63eba0f433594349e95f1b49",
+}
+### delete post
+
+

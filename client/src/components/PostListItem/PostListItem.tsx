@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getAxiosData } from "../../axios/axiosConfig";
+import { selectAuth } from "../../features/auth/authSlice";
 import { IPost } from "../../features/post/types";
 import { PostItem } from "../PostItem";
 
@@ -6,9 +9,27 @@ type PropsType = {
   listPosts: IPost[];
 };
 
+const pageSize = 3;
 
 const PostListItem: React.FC<PropsType> = (props) => {
-  const [listPosts, ] = useState(props.listPosts);
+  const { loading } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
+  const [currPage, setCurrPage] = useState(1);
+  const [listPosts, setListPosts] = useState(props.listPosts);
+
+  const handleLoadMore = async () => {
+    const resData = await getAxiosData(
+      `/api/posts/getPostListPagination?pageSize=${pageSize}&currentPage=${
+        currPage + 1
+      }`,
+      "",
+      dispatch
+    );
+    if (resData) {
+      setListPosts([...listPosts, ...resData.data.posts]);
+      setCurrPage(currPage + 1);
+    }
+  };
 
   return (
     <div className="ass1-section__list">
@@ -16,13 +37,13 @@ const PostListItem: React.FC<PropsType> = (props) => {
         <PostItem key={post._id} post={post} />
       ))}
 
-      {/* <Button
-        isLoading={loading}
-        onClick={handleLoadMore}
+      <button
         className="load-more ass1-btn"
+        onClick={handleLoadMore}
+        disabled={loading}
       >
-        Xem thêm
-      </Button> */}
+        <span>Xem thêm</span>
+      </button>
     </div>
   );
 };

@@ -9,7 +9,7 @@ type Props = {};
 const HomePage = (props: Props) => {
   const { posts } = useAppSelector(selectPost);
   const dispatch = useAppDispatch();
-  const { data } = useFetch("/api/posts", "", dispatch);
+  const { data } = useFetch(`/api/posts/getPostListPagination?pageSize=3&currentPage=1`, "", dispatch);
   useEffect(() => {
     if (data) {
       dispatch(setPostsRedux(data.posts));

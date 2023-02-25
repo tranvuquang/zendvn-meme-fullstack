@@ -39,7 +39,7 @@ export const getPosts = async (
   res: ResponseExtended
 ) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().sort({ createdAt: -1 });
 
     return res.status(200).json({
       status: 200,
@@ -109,6 +109,37 @@ export const deletePost = async (
     return res.status(200).json({
       status: 200,
       post,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+export const getPostsListPagination = async (
+  req: RequestExtended,
+  res: ResponseExtended
+) => {
+  try {
+    let { pageSize, currentPage } = req.query;
+    const perPage = Number(pageSize);
+    const page = Number(currentPage);
+
+    if (pageSize && currentPage) {
+      const posts = await Post.find()
+        .sort({ createdAt: -1 })
+        .skip(perPage * page - perPage)
+        .limit(perPage);
+      return res.status(200).json({
+        status: 200,
+        posts,
+        message: "success",
+      });
+    }
+    const posts = await Post.find().sort({ createdAt: -1 });
+    return res.status(200).json({
+      status: 200,
+      posts,
       message: "success",
     });
   } catch (err) {

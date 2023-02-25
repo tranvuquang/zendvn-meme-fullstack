@@ -5,6 +5,7 @@ import "./header.scss";
 import avatar from "../../assets/images/google-logo.png";
 import { logout } from "../../axios/axiosConfig";
 import HeaderMenu from "./HeaderMenu";
+import HeaderSearch from "./HeaderSearch";
 
 export default function Header() {
   const { user } = useAppSelector(selectAuth);
@@ -17,19 +18,7 @@ export default function Header() {
             ZendVn Meme
           </Link>
           <HeaderMenu />
-          <div className="ass1-header__search">
-            <form action="#">
-              <label>
-                <input
-                  type="search"
-                  name="search-text"
-                  className="form-control"
-                  placeholder="Nhập từ khóa ..."
-                />
-                <i className="icon-Search" />
-              </label>
-            </form>
-          </div>
+          <HeaderSearch />
           <Link to="/posts/create" className="ass1-header__btn-upload ass1-btn">
             <i className="icon-Upvote" /> Upload
           </Link>

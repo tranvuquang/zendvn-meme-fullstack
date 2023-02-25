@@ -4,13 +4,13 @@ import Layout from "./components/Layout/Layout";
 import PrivatePages from "./pages/PrivatePages";
 
 const HomePage = React.lazy(() => import("./pages/HomePage"));
+const SearchPage = React.lazy(() => import("./pages/SearchPage"));
 const LoginPage = React.lazy(() => import("./pages/LoginPage"));
 const RegisterPage = React.lazy(() => import("./pages/RegisterPage"));
 const PrivateRoute = React.lazy(() => import("./routes/PrivateRoute"));
 // console.log(import.meta.env.VITE_BACKEND_URL);
 function App() {
   return (
-    
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -28,6 +28,14 @@ function App() {
             element={
               <React.Suspense fallback={<h2>...Loading</h2>}>
                 <LoginPage />
+              </React.Suspense>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <React.Suspense fallback={<h2>...Loading</h2>}>
+                <SearchPage />
               </React.Suspense>
             }
           />

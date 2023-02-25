@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getAxiosData } from "../../axios/axiosConfig";
 import { selectAuth } from "../../features/auth/authSlice";
+import { selectPost } from "../../features/post/postSlice";
 import { IPost } from "../../features/post/types";
 import { PostItem } from "../PostItem";
 
@@ -13,9 +14,14 @@ const pageSize = 3;
 
 const PostListItem: React.FC<PropsType> = (props) => {
   const { loading } = useAppSelector(selectAuth);
+  const { posts } = useAppSelector(selectPost);
   const dispatch = useAppDispatch();
   const [currPage, setCurrPage] = useState(1);
   const [listPosts, setListPosts] = useState(props.listPosts);
+
+  useEffect(() => {
+    setListPosts(posts);
+  }, [posts]);
 
   const handleLoadMore = async () => {
     const resData = await getAxiosData(

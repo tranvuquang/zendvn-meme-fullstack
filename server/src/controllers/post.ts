@@ -146,3 +146,22 @@ export const getPostsListPagination = async (
     return res.status(500).json({ error: err.message });
   }
 };
+
+export const getSearchPosts = async (
+  req: RequestExtended,
+  res: ResponseExtended
+) => {
+  try {
+    const { query } = req.query;
+    const posts = await Post.find({post_content: { $regex: query, $options: "i" }}).sort({
+      createdAt: -1,
+    });
+    return res.status(200).json({
+      status: 200,
+      posts,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};

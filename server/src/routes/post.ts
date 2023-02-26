@@ -3,6 +3,7 @@ import { verifyToken } from "../middleware/auth";
 import {
   createPost,
   deletePost,
+  getCategoryPosts,
   getPost,
   getPosts,
   getPostsListPagination,
@@ -16,6 +17,7 @@ router.post("/create", verifyToken, createPost);
 router.get("/", getPosts);
 router.get("/getPostListPagination", getPostsListPagination);
 router.get("/search", getSearchPosts);
+router.get("/category/:id", getCategoryPosts);
 router.get("/:id", getPost);
 router.post("/:id", verifyToken, updatePost);
 router.delete("/delete", verifyToken, deletePost);

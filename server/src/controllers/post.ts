@@ -153,7 +153,28 @@ export const getSearchPosts = async (
 ) => {
   try {
     const { query } = req.query;
-    const posts = await Post.find({post_content: { $regex: query, $options: "i" }}).sort({
+    const posts = await Post.find({
+      post_content: { $regex: query, $options: "i" },
+    }).sort({
+      createdAt: -1,
+    });
+    return res.status(200).json({
+      status: 200,
+      posts,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+export const getCategoryPosts = async (
+  req: RequestExtended,
+  res: ResponseExtended
+) => {
+  try {
+    const { id } = req.params;
+    const posts = await Post.find({ category: { "$in" : [id]} }).sort({
       createdAt: -1,
     });
     return res.status(200).json({

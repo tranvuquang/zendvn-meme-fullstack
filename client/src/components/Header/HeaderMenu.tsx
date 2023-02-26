@@ -22,7 +22,7 @@ export default function HeaderMenu() {
         {categories.map((cate) => {
           return (
             <Dropdown.Item href="#/action-1" key={cate._id}>
-              <Link to={`/categories/${cate._id}`}>{cate.text}</Link>
+              <Link to={`/posts/categories/${cate._id}`}>{cate.text}</Link>
             </Dropdown.Item>
           );
         })}

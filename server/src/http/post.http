@@ -37,4 +37,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzliM
 }
 ### delete post
 
+GET http://localhost:5001/api/posts/category/63eba0f433594349e95f1b49
+Content-Type: application/json,*/*
+### get post
+
 
